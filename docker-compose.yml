@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: liftrtrackr-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: liftrtrackr
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - liftrtrackr-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: liftrtrackr-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - liftrtrackr-network
+
+  api:
+    build:
+      context: ./api
+    container_name: liftrtrackr-api
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: liftrtrackr
+      JWT_SECRET: your_jwt_secret_key
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - liftrtrackr-network
+
+  plateaubreaker:
+    build:
+      context: ./services/plateaubreaker
+    container_name: liftrtrackr-plateaubreaker
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: liftrtrackr
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+    depends_on:
+      - postgres
+      - rabbitmq
+      - api
+    networks:
+      - liftrtrackr-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: liftrtrackr-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - liftrtrackr-network
+
+networks:
+  liftrtrackr-network:
+    driver: bridge
+
+volumes:
+  postgres-data: 

@@ -1,0 +1,92 @@
+.gym-finder-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.description {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.gym-finder-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 992px) {
+  .gym-finder-container {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.map-container {
+  width: 100%;
+}
+
+.selected-gym-details {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.selected-gym-details h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.address {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.rating {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+.gym-photo {
+  margin: 15px 0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.gym-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.save-button {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.save-button:hover {
+  background-color: #3367d6;
+}
+
+.save-button:disabled {
+  background-color: #a4c2f4;
+  cursor: not-allowed;
+}
+
+.already-saved {
+  color: #4caf50;
+  font-weight: 600;
+} 
